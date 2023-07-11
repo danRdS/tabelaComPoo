@@ -1,0 +1,858 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root{
+    --bkgColor: #181818;
+    --textColor1: #e7e7e7;
+    --hover1: #959595;
+    --colorGold: gold;
+    --colorRed: #ef2130;
+    --colorVariantBlue: rgb(0, 157, 255);
+    --thUsuariosBkg: #411071;
+    --thBkg: #7f37c9;
+    --tdBkg: #545454;
+}
+
+html{
+    background-color: var(--bkgColor);
+    color: var(--textColor1);
+    scroll-behavior: smooth;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.container.errorMessage{
+    position: relative;
+}
+
+.backToMainTable{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.backToMainTable.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+.backToMainTable::before{
+    content: '';
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 0;
+    background-color: darkcyan;
+
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s linear;
+}
+
+
+.fieldMainTable{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fieldMainTable.hidden{
+    display: none;
+}
+
+#mainTable.hidden{
+    display: none;
+}
+
+.loadingMessage{
+    background-color: var(--colorVariantBlue);
+    width: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    border-radius: 3px;
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    top: 0px;
+    transition: all .8s ease-in-out;
+}
+
+.loadingMessage.show{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(1rem);
+}
+
+.loadingMessage::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-radius: 4px;
+    background-color: var(--colorGold);
+    bottom: 0;
+    left: 0;
+}
+
+@keyframes loadingBar {
+    from{transform-origin: left; transform: scaleX(0);}
+    to{transform-origin: left; transform: scaleX(1);}
+}
+
+.loadingMessage.show::after, .backToMainTable.visible::before{
+    animation-name: loadingBar;
+    animation-timing-function: ease-in;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+.circle{
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(2, 228, 231, .8);
+    border-top: 1.7px solid transparent;
+    border-radius: 50%;
+    animation-name: circleRotate;
+    animation-timing-function: linear;
+    animation-duration: .7s;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    position: relative;
+}
+
+@keyframes circleRotate {
+    0%{transform: rotate(0);}
+    50%{transform: rotate(900deg);}
+    75%{transform: rotate(1260deg); border-left: 0.5px solid transparent; border-bottom: .5px solid transparent;}
+    100%{transform: rotate(1440deg); border-left: 3px solid rgba(2, 228, 231, .8); border-bottom:  3px solid rgba(2, 228, 231, .8)}
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid grey;
+    border-radius: 2px;
+    padding: 10px;
+    gap: 1rem;
+    position: relative;
+}
+
+.form input{
+    background-color: transparent;
+    color: var(--textColor1);
+    outline: none;
+    border-radius: 1rem;
+    border: 1px solid #545454;
+    margin-top: 10px;
+    padding: .4rem .85rem;
+    font-size: .85rem;
+}
+
+.form input:focus{
+    border: 1px solid #1a73e8;
+}
+
+label[for = numId]{
+    position: absolute;
+    transform: translateY(17px);
+    pointer-events: none;
+    left: 1.2rem;
+    padding-left: 5px;
+    font-size: .8rem;
+    transition: all 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+label[for = numId]::before{
+    content: 'Informe um ';
+}
+
+.form input:is(:focus, :valid) + label{
+    color: #2196f3;
+    transform: translateY(10%) scale(.8);
+    background-color: var(--bkgColor);
+    padding: 0 8px;
+}
+
+.form input:is(:focus, :valid) + label::before{
+    content: '';
+}
+
+.form button, #saveChanges{
+    border: none;
+    background-color: aqua;
+    opacity: .8;
+    padding: 8px 0;
+    letter-spacing: .9px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.form button:hover, .showFormChanges:hover, #saveChanges:hover, .popupSaveChanges button:hover, #userAddOk:hover, .fieldButtonAddUser > button:hover, .btnConfirmDeleteUser:hover, .btnConfirmedDeleteUser:hover{
+    opacity: 1;
+}
+
+.field-add-remove{
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-remove{
+    padding: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 30px;
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.add-remove:is(:hover, :focus){
+    animation-name: expandir;
+    animation-timing-function: linear;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+.add-remove::after{
+    content: '';
+    position: relative;
+    right: 20px;
+    transition: all .5s ease-in-out;
+    white-space: nowrap;
+    opacity: 0;
+}
+
+.add-remove:is(:hover, :focus)::after{
+    content: 'Add usuário';
+    margin-left: 10px;
+    right: 0;
+    opacity: 1;
+}
+
+@keyframes expandir {
+    from{width: 30px; height: 30px}
+    to{width: 120px; height: 30px;}
+}
+
+.newUserData{
+    border: 1px solid grey;
+    padding: 1.5rem;
+    width: 50%;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.newUserData.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+#formNewUserData{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+}
+
+#formNewUserData input{
+    border: solid 1.5px #9e9e9e;
+    border-radius: 1rem;
+    background-color: transparent;
+    color: var(--textColor1);
+    padding: .5rem;
+    padding-left: 1rem;
+    font-size: .8rem;
+    transition: all 150ms ease-in-out;
+}
+
+label[for = nomeUsuario], 
+label[for = idadeUsuario]{
+    position: absolute;
+    left: 16px;
+    pointer-events: none;
+    transform: translateY(.3rem);
+    transition: all 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+label[for = idadeUsuario]{
+    transform: translateY(3.5rem);
+}
+
+#formNewUserData input:focus{
+    outline: none;
+    border: 1.5px solid #1a73e8;
+}
+
+input[name = idadeUsuario]:is(:focus, :valid) ~ label[for = idadeUsuario],
+input[name = nomeUsuario]:is(:focus, :valid) ~ label[for = nomeUsuario]{
+    transform: translateY(-50%) scale(.8);
+    background-color: var(--bkgColor);
+    color: #2196f3;
+    padding: 0 8px;
+}
+
+input[name = idadeUsuario]:is(:focus, :valid) ~ label[for = idadeUsuario]{
+    transform: translateY(180%) scale(.8);
+}
+
+.fieldButtonAddUser{
+    display: flex;
+    justify-content: space-between;
+    margin-top: .5rem;
+    padding: 0 5px;
+}
+
+.fieldButtonAddUser > button{
+    background-color: #411071;
+    color: var(--colorGold);
+    border: none;
+    border-radius: 2px;
+    min-width: 25%;
+    padding: 8px;
+    opacity: .8;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.modalSaveNewUser{
+    position: absolute;
+    top: 1px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.modalSaveNewUser.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+.popupSaveNewUser{
+    background-color: var(--tdBkg);
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    visibility: hidden;
+    opacity: 0;    
+    transition: all .5s ease-in-out;
+}
+
+.popupSaveNewUser.show{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(20px);
+}
+
+.popupSaveNewUser span{
+    margin: 5px 10px 5px 0;
+}
+
+#userAddOk{
+    background-color: var(--colorVariantBlue);
+    color: var(--textColor1);
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    min-width: 3rem;
+    align-self: flex-end;
+    cursor: pointer;
+    opacity: .8;
+    transition: opacity .3s ease-in-out;
+}
+
+
+.tableResult{
+    padding: 18px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    position: absolute;
+    top: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.tableResult.visible{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(10px);
+}
+
+.tableResult > table{
+    transition: all .6s ease-in;
+}
+
+.tableResult > table.hidden{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.field-buttons{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+}
+
+.field-buttons.hidden{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.showFormChanges{
+    background-color: var(--colorGold);
+    min-width: 8rem;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 2px;
+    letter-spacing: .3px;
+    opacity: .8;
+    cursor: pointer;
+    transition: all .3s ease-in;
+}
+
+.showFormChanges.hidden{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.sectionFormChanges{
+    position: absolute;
+    top: 90px;
+    border: 1px solid var(--hover1);
+    padding: 1rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .8s ease-in;
+
+}
+
+.sectionFormChanges.show{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-80px);
+}
+
+.modalSaveChanges{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .7);
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.modalSaveChanges.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+.popupSaveChanges{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--thBkg);
+    border-radius: 2px;
+    width: 20%;
+    padding: 10px;
+}
+
+.popupSaveChanges button{
+    background-color: var(--colorVariantBlue);
+    align-self: flex-end;
+    min-width: 5rem;
+    border: none;
+    border-radius: 2px;
+    color: var(--textColor1);
+    padding: 10px;
+    opacity: .8;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+#cancelChanges{
+    all: unset;
+    position: absolute;
+    top: 4px;
+    right: 9px;
+    font-size: 1rem;
+    color: var(--colorRed);
+    cursor: pointer;
+    opacity: .8;
+    transition: all .5s ease-in-out;
+    z-index: 1;
+}
+
+#cancelChanges:hover, #closeError:hover{
+    opacity: 1;
+    animation-name: cancelChangesHover;
+    animation-timing-function: ease-in-out;
+    animation-duration: .5s;
+    animation-iteration-count: 1;
+}
+
+#cancelChanges:focus, #closeError:focus{
+    transform: scale(1.3);
+}
+
+@keyframes cancelChangesHover {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.3);}
+    100% {transform: scale(1);}
+}
+
+#formChanges{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    top: 4px;
+    margin-top: 1.2rem;
+}
+
+#formChanges input{
+    background-color: transparent;
+    color: var(--textColor1);
+    outline: none;
+    border: 1px solid var(--tdBkg);
+    border-radius: 1rem;
+    padding: .4rem .85rem;
+}
+
+#formChanges input:focus{
+    border: 1px solid #1a73e8;
+}
+
+label[for = textName], label[for = numIdade]{
+    position: absolute;
+    left: 16px;
+    transform: translateY(6px);
+    pointer-events: none;
+    font-size: .9rem;
+    transition: all 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+label[for = numIdade]{
+    transform: translateY(62px);
+}
+
+#formChanges input:is(:focus, :valid) + label[for = textName],
+#formChanges input:is(:focus, :valid) + label[for = numIdade]{
+    color: #2196f3;
+    background-color: var(--bkgColor);
+    padding: 0 8px;
+    left: 4px;
+    transform: translateY(-50%) scale(.8);
+}
+#formChanges input:is(:focus, :valid) + label[for = numIdade]{
+    transform: translateY(240%) scale(.8);
+
+}
+
+#saveChanges{
+    background-color: #2196f3;
+    color: var(--textColor1);
+    letter-spacing: .9px;
+    font-size: 1.05rem;
+    padding: 8px;
+}
+
+.modalDeleteUser{
+    position: absolute;
+    top: 1px;
+    background-color: rgba(0, 0, 0, .7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.modalDeleteUser.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+.popupConfirmDeleteUser{
+    position: absolute;
+    background-color: #411071;
+    padding: 15px 10px 12px;
+    border-radius: 2px;
+    transition: all .3s ease-in-out;
+}
+
+.popupConfirmDeleteUser.hidden{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.field-buttons{
+    margin-top: 18px;
+}
+
+.btnConfirmDeleteUser{
+    padding: 9px 28px;
+    border: none;
+    border-radius: 2px;
+    background-color: var(--colorVariantBlue);
+    color: var(--textColor1);
+    opacity: .8;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.popupDeleteConfirmed{
+    background-color: var(--tdBkg);
+    width: 20%;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 1rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.popupDeleteConfirmed.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+.btnConfirmedDeleteUser{
+    padding: 7px 5px;
+    min-width: 45%;
+    background-color: var(--colorVariantBlue);
+    color: var(--textColor1);
+    border: none;
+    border-radius: 2px;
+    align-self: flex-end;
+    cursor: pointer;
+    opacity: .8;
+    transition: all .3s ease-in-out;
+}
+
+.modalErrorMessage{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: 1;
+}
+
+.modalErrorMessage.visible{
+    visibility: visible;
+    opacity: 1;
+}
+
+.fieldErrorMessage{
+    background-color: var(--colorRed);
+    width: 50%;
+    display: flex;
+    position: fixed;
+    top: 120px;
+    transition: all .5s ease-in-out;
+}
+
+.fieldErrorMessage span{
+    color: var(--colorGold);
+    margin: 25px 10px;
+}
+
+#closeError{
+    all: unset;
+    margin-left: 10px;
+    color: var(--hover1);
+    position: absolute;
+    top: 1px;
+    right: 8px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    font-size: 1.3rem;
+}
+
+th{
+    background-color: var(--thBkg);
+    color: var(--textColor1);
+    padding: 14px;
+}
+
+th.thUsuarios{
+    background-color: var(--thUsuariosBkg);
+    padding: 20px;
+    width: 250px;
+}
+
+td{
+    background-color: var(--tdBkg);
+    padding: 8px;
+    width: 150px;
+}
+
+#toTop{
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: #1a73e8;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    
+    animation-name: descida;
+    animation-timing-function: linear;
+    animation-duration: .5s;
+    
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+#toTop.visible{
+    visibility: visible;
+    opacity: 1;
+    animation-name: salto;
+    animation-timing-function: linear;
+    animation-duration: .2s;
+}
+
+#toTop i{
+    font-size: 1.3rem;
+}
+
+@keyframes salto {
+    from{transform: scale(0);}
+    to{transform: scale(1);}
+}
+
+@keyframes descida {
+    0%{transform: scale(1);}
+    20%{transform: scale(1.3);}
+    50%{transform: scale(0);}
+}
+
+
+
+@media screen and (max-width: 820px) {
+    .newUserData{
+        width: 60%;
+    }
+    .showFormChanges{
+        min-width: 7rem;
+        font-size: .80rem;
+        padding: 8px 5px;
+    }
+    .popupDeleteConfirmed{
+        width: 40%;
+    }
+    .fieldButtonAddUser button{
+        font-size: .75rem;
+        padding: 8px 18px;
+    }
+    .popupSaveChanges{
+        width: 35%;
+    }
+}
+@media screen and (max-width: 420px) {
+    .fieldErrorMessage{
+        width: 80%;
+        font-size: .85rem;
+    }
+    .popupConfirmDeleteUser{
+        min-width: 70%;
+    }
+    .popupDeleteConfirmed{
+        width: 60%;
+    }
+
+    .field-buttons{
+        flex-direction: column;
+    }    
+
+    .newUserData{
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .showFormChanges{
+        padding: 10px;
+        font-size: .95rem;
+        letter-spacing: .4px;
+    }
+
+    .fieldButtonAddUser{
+        flex-direction: column;
+        gap: .85rem;
+    }
+
+    .fieldButtonAddUser button{
+        font-size: .9rem;
+    }
+
+    .popupSaveChanges{
+        width: 60%;
+    }
+
+    .popupSaveChanges button{
+        padding: 8px;
+        min-width: 4rem;
+    }
+}

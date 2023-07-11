@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/callbackStyle.css">
+    <link rel="icon" href="assets/images/users-rectangle-solid.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Tabela de Usuários</title>
+</head>
+<body>
+    <main class="container">
+        <span class="backToMainTable"></span>
+        <div class="fieldMainTable">
+            <table border="1" align="center" cellspacing="0" id="mainTable">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="thUsuarios">USUÁRIOS</th>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOME</th>
+                        <th>IDADE</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabela">
+
+                </tbody>
+            </table>
+
+            <form action="" class="form">
+                <input type="number" name="numId" id="numId" min="0" required>
+                <label for="numId">ID</label>
+                <button type="submit" id="search">Pesquisar</button>
+            </form>
+            
+            <section class="field-add-remove">
+                <button class="add-remove" id="adicionar">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </section>
+        </div>
+
+        <div class="newUserData">
+            <form action="" id="formNewUserData">
+                <input type="text" name="nomeUsuario" id="nomeUsuario" required>
+                <label for="nomeUsuario">Nome</label>
+                <input type="number" name="idadeUsuario" id="idadeUsuario" min="0" required>
+                <label for="idadeUsuario">Idade</label>
+                <section class="fieldButtonAddUser">
+                    <button type="submit" id="confirmAdd">Confirmar</button>
+                    <button id="back">Voltar</button>
+                </section>
+            </form>
+        </div>
+
+        <span class="loadingMessage">
+            Carregando...
+            <div class="circle"></div>
+        </span>
+
+        <div class="tableResult">
+            <table border="1" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th colspan="3">DADOS</th>
+                    </tr>
+                    <tr>
+                        <td align="center">ID</td>
+                        <td align="center">NOME</td>
+                        <td align="center">IDADE</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center" id="tableId"></td>
+                        <td align="center" id="tableNome"></td>
+                        <td align="center" id="tableIdade"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="field-buttons">
+                <button id="showFormChanges" class="showFormChanges">Alterar</button>
+                <button id="remover" class="showFormChanges">Excluir Usuário</button>
+                <button id="viewTable" class="showFormChanges">Visualizar tabela</button>
+            </div>
+            
+            <section class="sectionFormChanges" id="sectionFormChanges">
+                <button id="cancelChanges" title="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <form action="" id="formChanges">
+                    <input type="text" name="textName" id="textName" required>
+                    <label for="textName">Novo nome</label>
+                    
+                    <input type="number" name="numIdade" id="numIdade" required min="0">
+                    <label for="numIdade">Nova idade</label>
+                    <button type="submit" id="saveChanges">Salvar</button>
+
+                </form>
+            </section>                
+        </div>
+
+        <div class="modalDeleteUser">
+            <section class="popupConfirmDeleteUser">
+                <span>Confirma a exclusão?</span>
+                <div class="field-buttons">
+                    <button class="btnConfirmDeleteUser" id="cancelDeleteUser">Cancelar</button>
+                    <button class="btnConfirmDeleteUser" id="confirmDeleteUser">Confirmar</button>
+                </div>
+            </section>
+            <section class="popupDeleteConfirmed">
+                <span>Usuário excluído</span>
+                <button class="btnConfirmedDeleteUser" id="deleteOK">Ok</button>
+            </section>
+        </div>
+
+        <div class="modalSaveNewUser">
+            <section class="popupSaveNewUser">
+                <span id="alertNewUserAdd"></span>
+                <button id="userAddOk">Ok</button>
+            </section>
+        </div>
+
+        <div class="modalSaveChanges">
+            <section class="popupSaveChanges">
+                <span>Alterações salvas</span>
+                <button id="Ok">Ok</button>
+            </section>
+        </div>
+
+        <div class="modalErrorMessage">
+            <section class="fieldErrorMessage">
+                <span id="errorMessage"></span>
+                <button id="closeError" title="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </section>
+        </div>
+    </main>
+
+    <button id="toTop">
+        <i class="fa-solid fa-chevron-up"></i>
+        <!-- <i class="fa-solid fa-angle-up"></i> -->
+    </button>
+
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
