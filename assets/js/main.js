@@ -273,6 +273,7 @@ function scrollTop(){
 }
 
 const btnAddUser = document.getElementById('adicionar');
+const buttonAddArea = document.querySelector('.buttonAddArea');
 const newUserData = document.querySelector('.newUserData');
 const formNewUserData = document.querySelector('#formNewUserData');
 const btnBack = document.getElementById('back');
@@ -282,11 +283,13 @@ const novoUsuario = document.getElementById('nomeUsuario');
 const novoUsuarioIdade = document.getElementById('idadeUsuario');
 
 btnAddUser.addEventListener('click', ()=>{
+    buttonAddArea.classList.add('clicked');
     setTimeout(()=>{
         scrollTop();
         newUserData.classList.add('visible');
         fieldMainTable.classList.add('hidden');
         btnAddUser.classList.add('hidden');
+        buttonAddArea.classList.remove('clicked');
     }, 700);
 })
 
